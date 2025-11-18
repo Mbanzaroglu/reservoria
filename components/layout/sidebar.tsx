@@ -187,26 +187,70 @@ function SidebarItemComponent({ item, level = 0 }: { item: SidebarItem; level?: 
 
 export function Sidebar() {
   const sidebarOpen = useUIStore((state) => state.sidebarOpen)
+  const setSidebarOpen = useUIStore((state) => state.setSidebarOpen)
+
+  // Close sidebar when clicking outside on mobile/tablet
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(true)
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+    handleResize()
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [setSidebarOpen])
 
   return (
-    <aside
-      className={cn(
-        "fixed left-0 top-0 z-40 h-screen w-64 border-r bg-card transition-transform",
-        sidebarOpen ? "translate-x-0" : "-translate-x-full",
-        "lg:translate-x-0"
+    <>
+      {/* Overlay for mobile/tablet */}
+      {sidebarOpen && (
+        <div
+          className={cn(
+            "fixed inset-0 z-30 bg-black/50 transition-opacity lg:hidden",
+            sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          )}
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
-    >
-      <div className="flex h-full flex-col">
-        <div className="flex h-16 items-center border-b px-6">
-          <h1 className="text-xl font-bold text-primary">Reservoria</h1>
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-40 h-screen w-64 border-r bg-card transition-transform duration-300 ease-in-out",
+          // Mobile: Full overlay, hidden by default
+          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+          // Tablet: Can be toggled, wider
+          "md:w-72",
+          // Desktop: Always visible, static position
+          "lg:translate-x-0 lg:relative lg:z-auto"
+        )}
+      >
+        <div className="flex h-full flex-col">
+          {/* Header with close button for mobile/tablet */}
+          <div className="flex h-16 items-center justify-between border-b px-4 lg:px-6">
+            <h1 className="text-lg font-bold text-primary md:text-xl">Reservoria</h1>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+          
+          {/* Navigation */}
+          <nav className="flex-1 space-y-1 overflow-y-auto p-3 md:p-4">
+            {sidebarItems.map((item) => (
+              <SidebarItemComponent key={item.label} item={item} />
+            ))}
+          </nav>
         </div>
-        <nav className="flex-1 space-y-1 overflow-y-auto p-4">
-          {sidebarItems.map((item) => (
-            <SidebarItemComponent key={item.label} item={item} />
-          ))}
-        </nav>
-      </div>
-    </aside>
+      </aside>
+    </>
   )
 }
 

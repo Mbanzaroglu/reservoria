@@ -85,18 +85,18 @@ function FinancialSummaryCards() {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
-        <div key={card.title} className="rounded-lg border bg-card p-6">
+        <div key={card.title} className="rounded-lg border bg-card p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
                 {card.title}
               </p>
-              <p className="mt-2 text-2xl font-bold">{card.value}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold truncate">{card.value}</p>
               <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                <card.icon className={`h-3 w-3 ${card.iconColor}`} />
-                {card.description}
+                <card.icon className={`h-3 w-3 flex-shrink-0 ${card.iconColor}`} />
+                <span className="truncate">{card.description}</span>
               </p>
             </div>
           </div>
@@ -123,101 +123,103 @@ function FinancialSummaryTable() {
   const hotelsData = hotels || []
 
   return (
-    <div className="rounded-lg border bg-card">
-      <div className="flex items-center justify-between border-b p-6">
-        <h2 className="text-lg font-semibold">Finansal Özet - Tüm Oteller</h2>
-        <div className="relative w-64">
+    <div className="rounded-lg border bg-card overflow-hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-semibold">Finansal Özet - Tüm Oteller</h2>
+        <div className="relative w-full sm:w-64">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Ara"
-            className="pl-9"
+            className="pl-9 w-full"
           />
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="border-b bg-muted/50">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Otel Adı
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Şehir
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Rezervasyon Sayısı
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Rezervasyon Geliri
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Platform Kazancı
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Otel Sahibine Ödenecek Tutar
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
-                Platformdan Bekl
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {hotelsData.map((hotel) => (
-              <tr key={hotel.id} className="border-b hover:bg-muted/50">
-                <td className="px-6 py-4 font-medium">{hotel.name}</td>
-                <td className="px-6 py-4 text-muted-foreground">{hotel.city}</td>
-                <td className="px-6 py-4">{hotel.reservationCount}</td>
-                <td className="px-6 py-4">
-                  <div>
-                    <div className="font-medium">
-                      {formatCurrency(hotel.reservationRevenue)}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Airbnb/Booking&apos;den gelecek
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div>
-                    <div className="font-medium">
-                      {formatCurrency(hotel.platformEarnings)}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Komisyon geliri
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div>
-                    <div className="font-medium">
-                      {formatCurrency(hotel.amountToPayHotel)}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Komisyon ve platform kesintileri düşüldükten sonra
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div>
-                    <div className="font-medium">
-                      {formatCurrency(hotel.expectedFromPlatform)}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {hotel.delayedAmount > 0
-                        ? `Gecikmiş: ${formatCurrency(hotel.delayedAmount)}`
-                        : hotel.collectionPending
-                        ? "Tahsilat beklenmiyor"
-                        : ""}
-                    </div>
-                  </div>
-                </td>
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle">
+          <table className="w-full">
+            <thead className="border-b bg-muted/50">
+              <tr>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Otel Adı
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Şehir
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Rezervasyon Sayısı
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Rezervasyon Geliri
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Platform Kazancı
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Otel Sahibine Ödenecek Tutar
+                </th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Platformdan Bekl
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {hotelsData.map((hotel) => (
+                <tr key={hotel.id} className="border-b hover:bg-muted/50">
+                  <td className="px-3 sm:px-6 py-4 font-medium whitespace-nowrap">{hotel.name}</td>
+                  <td className="px-3 sm:px-6 py-4 text-muted-foreground whitespace-nowrap">{hotel.city}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">{hotel.reservationCount}</td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="font-medium text-sm sm:text-base">
+                        {formatCurrency(hotel.reservationRevenue)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Airbnb/Booking&apos;den gelecek
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="font-medium text-sm sm:text-base">
+                        {formatCurrency(hotel.platformEarnings)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Komisyon geliri
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="font-medium text-sm sm:text-base">
+                        {formatCurrency(hotel.amountToPayHotel)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Komisyon ve platform kesintileri düşüldükten sonra
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="font-medium text-sm sm:text-base">
+                        {formatCurrency(hotel.expectedFromPlatform)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {hotel.delayedAmount > 0
+                          ? `Gecikmiş: ${formatCurrency(hotel.delayedAmount)}`
+                          : hotel.collectionPending
+                          ? "Tahsilat beklenmiyor"
+                          : ""}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="flex items-center justify-between border-t p-4">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs sm:text-sm text-muted-foreground">
           sayfa başına 10
         </div>
       </div>
@@ -280,18 +282,18 @@ function StatisticsCards() {
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
-        <div key={card.title} className="rounded-lg border bg-card p-6">
+        <div key={card.title} className="rounded-lg border bg-card p-4 sm:p-6">
           <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-muted-foreground">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
                 {card.title}
               </p>
-              <p className="mt-2 text-2xl font-bold">{card.value}</p>
+              <p className="mt-2 text-xl sm:text-2xl font-bold truncate">{card.value}</p>
               <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                <card.icon className="h-3 w-3" />
-                {card.description}
+                <card.icon className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{card.description}</span>
               </p>
             </div>
           </div>
@@ -307,10 +309,10 @@ function StatisticsCards() {
 export default function OverviewPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Genel Bakış</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold">Genel Bakış</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Finansal özet ve genel istatistikler
           </p>
         </div>

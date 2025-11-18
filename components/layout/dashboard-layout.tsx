@@ -15,15 +15,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div
-        className={cn(
-          "flex flex-1 flex-col transition-all",
-          sidebarOpen && "lg:ml-64"
-        )}
-      >
+      <div className="flex flex-1 flex-col min-w-0">
         <Header />
-        <main className="flex-1 overflow-y-auto bg-muted/50 p-6">
-          {children}
+        <main className="flex-1 overflow-y-auto bg-muted/50 p-4 sm:p-6">
+          <div className="mx-auto w-full max-w-7xl">
+            {children}
+          </div>
         </main>
       </div>
     </div>

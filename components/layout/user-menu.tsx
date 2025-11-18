@@ -54,8 +54,8 @@ export function UserMenu() {
 
   if (!mounted) {
     return (
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <span className="text-sm font-semibold">{getUserInitials()}</span>
+      <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-[#1e3a8a] text-white shadow-sm">
+        <span className="text-xs sm:text-sm font-semibold">{getUserInitials()}</span>
       </div>
     )
   }
@@ -65,10 +65,10 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 rounded-full"
+          className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-full p-0 hover:opacity-90 transition-opacity"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <span className="text-sm font-semibold">{getUserInitials()}</span>
+          <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-[#1e3a8a] text-white shadow-sm">
+            <span className="text-xs sm:text-sm font-semibold">{getUserInitials()}</span>
           </div>
         </Button>
       </DropdownMenuTrigger>
