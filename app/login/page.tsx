@@ -1,40 +1,51 @@
 "use client"
 
-import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { useToast } from "@/hooks/use-toast"
 import { routes } from "@/lib/routes"
+import { loginSchema, type LoginFormData } from "@/lib/validations/auth"
 import { Loader2 } from "lucide-react"
+import { AuthBackground } from "@/components/auth/auth-background"
 
 /**
  * Login page component
- * Handles user authentication via NextAuth
+ * Handles user authentication via NextAuth with Zod validation
  */
 export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   })
 
   const callbackUrl = searchParams.get("callbackUrl") || routes.overview
+  const isLoading = form.formState.isSubmitting
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-
+  const onSubmit = async (data: LoginFormData) => {
     try {
       const result = await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       })
 
@@ -82,66 +93,71 @@ export default function LoginPage() {
         description: error instanceof Error ? error.message : "Lütfen tekrar deneyin.",
         variant: "destructive",
       })
-    } finally {
-      setIsLoading(false)
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
-  }
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/50 p-4">
-      <div className="w-full max-w-md space-y-8 rounded-lg border bg-card p-8 shadow-lg">
+    <div className="relative flex min-h-screen items-center justify-center p-4">
+      <AuthBackground />
+      
+      <div className="relative w-full max-w-md space-y-8 rounded-lg border bg-card/95 backdrop-blur-sm p-8 shadow-xl">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-primary">Reservoria</h1>
           <p className="mt-2 text-muted-foreground">Hesabınıza giriş yapın</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
               name="email"
-              type="email"
-              placeholder="ornek@email.com"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="ornek@email.com"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Şifre</Label>
-            <Input
-              id="password"
+            <FormField
+              control={form.control}
               name="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Şifre</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Giriş yapılıyor...
-              </>
-            ) : (
-              "Giriş Yap"
-            )}
-          </Button>
-        </form>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Giriş yapılıyor...
+                </>
+              ) : (
+                "Giriş Yap"
+              )}
+            </Button>
+          </form>
+        </Form>
 
         <div className="text-center text-sm">
           <span className="text-muted-foreground">Hesabınız yok mu? </span>

@@ -1,64 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { useToast } from "@/hooks/use-toast"
 import { routes } from "@/lib/routes"
 import { apiEndpoints, env } from "@/lib/config"
+import { registerSchema, type RegisterFormData } from "@/lib/validations/auth"
 import { Loader2 } from "lucide-react"
+import { AuthBackground } from "@/components/auth/auth-background"
 
 /**
  * Register page component
- * Handles user registration via external API
+ * Handles user registration via external API with Zod validation
  */
 export default function RegisterPage() {
   const router = useRouter()
   const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const isLoading = form.formState.isSubmitting
 
-    // Validation
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Şifreler eşleşmiyor",
-        description: "Lütfen şifrelerin aynı olduğundan emin olun.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    if (formData.password.length < 6) {
-      toast({
-        title: "Şifre çok kısa",
-        description: "Şifre en az 6 karakter olmalıdır.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    setIsLoading(true)
-
+  const onSubmit = async (data: RegisterFormData) => {
     try {
       // TODO: Replace with actual API call
       // const response = await fetch(`${env.API_BASE_URL}${apiEndpoints.auth.register}`, {
       //   method: "POST",
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify({
-      //     name: formData.name,
-      //     email: formData.email,
-      //     password: formData.password,
+      //     name: data.name,
+      //     email: data.email,
+      //     password: data.password,
       //   }),
       // })
 
@@ -88,96 +80,109 @@ export default function RegisterPage() {
             : "Bir hata oluştu. Lütfen tekrar deneyin.",
         variant: "destructive",
       })
-    } finally {
-      setIsLoading(false)
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
-  }
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/50 p-4">
-      <div className="w-full max-w-md space-y-8 rounded-lg border bg-card p-8 shadow-lg">
+    <div className="relative flex min-h-screen items-center justify-center p-4">
+      <AuthBackground />
+      
+      <div className="relative w-full max-w-md space-y-8 rounded-lg border bg-card/95 backdrop-blur-sm p-8 shadow-xl">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-primary">Reservoria</h1>
           <p className="mt-2 text-muted-foreground">Yeni hesap oluşturun</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="name">Ad Soyad</Label>
-            <Input
-              id="name"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
               name="name"
-              type="text"
-              placeholder="Adınız Soyadınız"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ad Soyad</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Adınız Soyadınız"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
+            <FormField
+              control={form.control}
               name="email"
-              type="email"
-              placeholder="ornek@email.com"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="ornek@email.com"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Şifre</Label>
-            <Input
-              id="password"
+            <FormField
+              control={form.control}
               name="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              minLength={6}
-              value={formData.password}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Şifre</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Şifre Tekrar</Label>
-            <Input
-              id="confirmPassword"
+            <FormField
+              control={form.control}
               name="confirmPassword"
-              type="password"
-              placeholder="••••••••"
-              required
-              minLength={6}
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Şifre Tekrar</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="••••••••"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Kayıt yapılıyor...
-              </>
-            ) : (
-              "Kayıt Ol"
-            )}
-          </Button>
-        </form>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Kayıt yapılıyor...
+                </>
+              ) : (
+                "Kayıt Ol"
+              )}
+            </Button>
+          </form>
+        </Form>
 
         <div className="text-center text-sm">
           <span className="text-muted-foreground">Zaten hesabınız var mı? </span>
