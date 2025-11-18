@@ -27,10 +27,12 @@ export function Loading({ className, size = "md", text }: LoadingProps) {
 
 /**
  * Full page loading overlay
+ * Use sparingly - only for critical operations
+ * For page transitions, use skeleton components instead
  */
 export function LoadingOverlay({ text }: { text?: string }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-background/80 backdrop-blur-sm">
       <Loading size="lg" text={text || "Yükleniyor..."} />
     </div>
   )

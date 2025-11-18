@@ -190,6 +190,81 @@ export const dummyUsers = [
   },
 ]
 
+// Reports Dummy Data
+export const dummyReports = {
+  reservationReports: [
+    {
+      id: "1",
+      title: "Aylık Rezervasyon Raporu",
+      period: "Ocak 2025",
+      totalReservations: 45,
+      totalRevenue: 125000.0,
+      status: "completed",
+      createdAt: "2025-01-15",
+    },
+    {
+      id: "2",
+      title: "Haftalık Rezervasyon Raporu",
+      period: "15-21 Ocak 2025",
+      totalReservations: 12,
+      totalRevenue: 32000.0,
+      status: "completed",
+      createdAt: "2025-01-22",
+    },
+    {
+      id: "3",
+      title: "Yıllık Rezervasyon Raporu",
+      period: "2025",
+      totalReservations: 156,
+      totalRevenue: 450000.0,
+      status: "processing",
+      createdAt: "2025-01-25",
+    },
+  ],
+  financialReports: [
+    {
+      id: "1",
+      title: "Aylık Finansal Özet",
+      period: "Ocak 2025",
+      totalRevenue: 125000.0,
+      commission: 12500.0,
+      hotelPayments: 112500.0,
+      status: "completed",
+      createdAt: "2025-01-15",
+    },
+    {
+      id: "2",
+      title: "Haftalık Finansal Özet",
+      period: "15-21 Ocak 2025",
+      totalRevenue: 32000.0,
+      commission: 3200.0,
+      hotelPayments: 28800.0,
+      status: "completed",
+      createdAt: "2025-01-22",
+    },
+  ],
+  facilityReports: [
+    {
+      id: "1",
+      facilityName: "Test-2",
+      totalReservations: 28,
+      totalRevenue: 85000.0,
+      occupancyRate: 75.5,
+      averageStay: 2.5,
+      period: "Ocak 2025",
+    },
+    {
+      id: "2",
+      facilityName: "Test-1",
+      totalReservations: 17,
+      totalRevenue: 40000.0,
+      occupancyRate: 62.3,
+      averageStay: 2.1,
+      period: "Ocak 2025",
+    },
+  ],
+}
+
 // Dummy Login Credentials for Testing
 // These are only used in development mode
 export const dummyLoginCredentials = [
