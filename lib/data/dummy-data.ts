@@ -265,6 +265,70 @@ export const dummyReports = {
   ],
 }
 
+// Calendar Reservations Dummy Data
+export const dummyCalendarReservations = [
+  {
+    id: "1",
+    facilityId: "1",
+    facilityName: "Test-2",
+    roomId: "1",
+    roomName: "Deluxe Suite",
+    guestName: "John Doe",
+    checkIn: "2025-11-01",
+    checkOut: "2025-11-05",
+    status: "confirmed",
+    adultCount: 2,
+    childCount: 0,
+    totalPrice: 23000.00,
+    source: "Booking.com",
+  },
+  {
+    id: "2",
+    facilityId: "1",
+    facilityName: "Test-2",
+    roomId: "2",
+    roomName: "Standard Room",
+    guestName: "Jane Smith",
+    checkIn: "2025-11-10",
+    checkOut: "2025-11-15",
+    status: "confirmed",
+    adultCount: 2,
+    childCount: 1,
+    totalPrice: 11500.00,
+    source: "Airbnb",
+  },
+  {
+    id: "3",
+    facilityId: "2",
+    facilityName: "Test-1",
+    roomId: "3",
+    roomName: "Economy Room",
+    guestName: "Bob Johnson",
+    checkIn: "2025-11-05",
+    checkOut: "2025-11-08",
+    status: "confirmed",
+    adultCount: 1,
+    childCount: 0,
+    totalPrice: 2400.00,
+    source: "Direct",
+  },
+  {
+    id: "4",
+    facilityId: "2",
+    facilityName: "Test-1",
+    roomId: "4",
+    roomName: "Family Room",
+    guestName: "Alice Williams",
+    checkIn: "2025-11-20",
+    checkOut: "2025-11-25",
+    status: "confirmed",
+    adultCount: 2,
+    childCount: 2,
+    totalPrice: 8000.00,
+    source: "Airbnb",
+  },
+]
+
 // Dummy Login Credentials for Testing
 // These are only used in development mode
 export const dummyLoginCredentials = [
