@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation"
 import { routes } from "@/lib/routes"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 /**
  * User menu dropdown component
@@ -25,6 +26,7 @@ export function UserMenu() {
   const { data: session } = useSession()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
+  const { toast } = useToast()
   const [mounted, setMounted] = useState(false)
 
   // Get user initials for avatar
@@ -46,18 +48,40 @@ export function UserMenu() {
 
   const handleLogout = async () => {
     try {
+      // Show toast notification
+      toast({
+        title: "Oturum kapatılıyor",
+        description: "Çıkış yapılıyor, lütfen bekleyin...",
+      })
+
       // Sign out and clear session
       await signOut({ 
         redirect: false,
         callbackUrl: routes.login
       })
-      // Force full page reload to ensure session is cleared
+
+      // Show success toast
+      toast({
+        title: "Oturum kapatıldı",
+        description: "Başarıyla çıkış yaptınız. Yönlendiriliyorsunuz...",
+      })
+
+      // Small delay to show toast, then force full page reload
       // This ensures middleware picks up the session change immediately
-      window.location.href = routes.login
+      setTimeout(() => {
+        window.location.href = routes.login
+      }, 500)
     } catch (error) {
       console.error("Logout error:", error)
+      toast({
+        title: "Hata",
+        description: "Çıkış yapılırken bir hata oluştu.",
+        variant: "destructive",
+      })
       // Force navigation even if signOut fails
-      window.location.href = routes.login
+      setTimeout(() => {
+        window.location.href = routes.login
+      }, 1000)
     }
   }
 
