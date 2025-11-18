@@ -142,9 +142,9 @@ function SidebarItemComponent({ item, level = 0 }: { item: SidebarItem; level?: 
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+            "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors text-muted-foreground",
             level > 0 && "pl-8",
-            "hover:bg-accent hover:text-accent-foreground"
+            "hover:text-foreground"
           )}
         >
           <item.icon className="h-5 w-5" />
@@ -156,7 +156,7 @@ function SidebarItemComponent({ item, level = 0 }: { item: SidebarItem; level?: 
           )}
         </button>
         {isOpen && (
-          <div className="mt-1 space-y-1">
+          <div className="mt-2 space-y-2">
             {item.children.map((child) => (
               <SidebarItemComponent key={child.label} item={child} level={level + 1} />
             ))}
@@ -172,14 +172,19 @@ function SidebarItemComponent({ item, level = 0 }: { item: SidebarItem; level?: 
     <Link
       href={item.href}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
         level > 0 && "pl-8",
         isActive
-          ? "bg-accent text-accent-foreground"
-          : "hover:bg-accent hover:text-accent-foreground"
+          ? "bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400"
+          : "text-muted-foreground hover:text-foreground"
       )}
     >
-      <item.icon className="h-5 w-5" />
+      <item.icon 
+        className={cn(
+          "h-5 w-5",
+          isActive ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+        )} 
+      />
       <span>{item.label}</span>
     </Link>
   )
@@ -243,7 +248,7 @@ export function Sidebar() {
           </div>
           
           {/* Navigation */}
-          <nav className="flex-1 space-y-1 overflow-y-auto p-3 md:p-4">
+          <nav className="flex-1 space-y-3 overflow-y-auto p-4 md:p-6">
             {sidebarItems.map((item) => (
               <SidebarItemComponent key={item.label} item={item} />
             ))}

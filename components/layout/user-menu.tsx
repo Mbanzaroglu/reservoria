@@ -15,6 +15,7 @@ import { User, Sun, Moon, Monitor, LogOut } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { routes } from "@/lib/routes"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 /**
  * User menu dropdown component
@@ -84,28 +85,43 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         
         {/* Theme Switcher */}
-        <div className="p-2">
-          <div className="flex items-center justify-between gap-2">
+        <div className="px-1">
+          <div className="flex items-center justify-between gap-1.5 w-full">
             <Button
-              variant={theme === "light" ? "secondary" : "ghost"}
+              variant="ghost"
               size="icon"
-              className={`h-8 w-8 ${theme === "light" ? "bg-muted" : ""}`}
+              className={cn(
+                "flex-[0.32] h-9 rounded-md transition-colors",
+                theme === "light" 
+                  ? "bg-muted text-green-600" 
+                  : "text-muted-foreground hover:bg-accent"
+              )}
               onClick={() => setTheme("light")}
             >
-              <Sun className={`h-4 w-4 ${theme === "light" ? "text-green-600" : ""}`} />
+              <Sun className="h-4 w-4" />
             </Button>
             <Button
-              variant={theme === "dark" ? "secondary" : "ghost"}
+              variant="ghost"
               size="icon"
-              className={`h-8 w-8 ${theme === "dark" ? "bg-muted" : ""}`}
+              className={cn(
+                "flex-[0.32] h-9 rounded-md transition-colors",
+                theme === "dark" 
+                  ? "bg-muted text-foreground" 
+                  : "text-muted-foreground hover:bg-accent"
+              )}
               onClick={() => setTheme("dark")}
             >
               <Moon className="h-4 w-4" />
             </Button>
             <Button
-              variant={theme === "system" ? "secondary" : "ghost"}
+              variant="ghost"
               size="icon"
-              className={`h-8 w-8 ${theme === "system" ? "bg-muted" : ""}`}
+              className={cn(
+                "flex-[0.32] h-9 rounded-md transition-colors",
+                theme === "system" 
+                  ? "bg-muted text-foreground" 
+                  : "text-muted-foreground hover:bg-accent"
+              )}
               onClick={() => setTheme("system")}
             >
               <Monitor className="h-4 w-4" />
