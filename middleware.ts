@@ -16,6 +16,13 @@ export default withAuth(
       return NextResponse.redirect(new URL(routes.overview, req.url))
     }
 
+    // If user is not authenticated and tries to access protected routes, redirect to login
+    if (!token && pathname.startsWith("/dashboard")) {
+      const loginUrl = new URL(routes.login, req.url)
+      loginUrl.searchParams.set("callbackUrl", pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+
     // Allow access to public routes
     if (pathname === routes.login || pathname === routes.register || pathname === routes.home) {
       return NextResponse.next()
@@ -30,17 +37,34 @@ export default withAuth(
         const pathname = req.nextUrl.pathname
 
         // Public routes don't require authentication
-        const publicRoutes = [routes.login, routes.register, routes.home, "/api/auth"]
-        if (publicRoutes.some((route) => pathname === route || pathname.startsWith(route))) {
+        const publicRoutes = [
+          routes.login, 
+          routes.register, 
+          routes.home, 
+          "/api/auth",
+          "/_next",
+          "/favicon.ico"
+        ]
+        
+        // Check if pathname matches any public route
+        const isPublicRoute = publicRoutes.some((route) => {
+          if (route === "/_next") {
+            return pathname.startsWith("/_next")
+          }
+          return pathname === route || pathname.startsWith(route)
+        })
+
+        if (isPublicRoute) {
           return true
         }
 
-        // Protected routes require authentication
-        if (pathname.startsWith("/dashboard") || pathname.startsWith("/api")) {
+        // Protected routes (dashboard and other app routes) require authentication
+        if (pathname.startsWith("/dashboard")) {
           return !!token
         }
 
-        return true
+        // For other routes, allow if authenticated
+        return !!token
       },
     },
     pages: {
@@ -57,8 +81,9 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
+     * - api/auth (NextAuth endpoints)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|_next/webpack-hmr|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$|api/auth).*)",
   ],
 }
 

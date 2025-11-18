@@ -45,8 +45,20 @@ export function UserMenu() {
   }
 
   const handleLogout = async () => {
-    await signOut({ redirect: false })
-    router.push(routes.login)
+    try {
+      // Sign out and clear session
+      await signOut({ 
+        redirect: false,
+        callbackUrl: routes.login
+      })
+      // Force full page reload to ensure session is cleared
+      // This ensures middleware picks up the session change immediately
+      window.location.href = routes.login
+    } catch (error) {
+      console.error("Logout error:", error)
+      // Force navigation even if signOut fails
+      window.location.href = routes.login
+    }
   }
 
   useEffect(() => {

@@ -73,7 +73,8 @@ export const authOptions: NextAuthOptions = {
     error: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
+      // Initial sign in
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -81,11 +82,19 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken
         token.refreshToken = user.refreshToken
       }
+      
+      // Handle session update
+      if (trigger === "update") {
+        // Session can be updated here if needed
+      }
+      
       return token
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token) {
         session.user.id = token.id as string
+        session.user.email = token.email as string
+        session.user.name = token.name as string
         session.user.accessToken = token.accessToken as string
         session.user.refreshToken = token.refreshToken as string
       }

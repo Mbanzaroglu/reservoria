@@ -61,10 +61,12 @@ export default function LoginPage() {
           title: "Giriş başarılı",
           description: "Yönlendiriliyorsunuz...",
         })
-        // Small delay to show toast
+        // Small delay to show toast and ensure session is saved
         setTimeout(() => {
-          router.push(callbackUrl)
+          // Refresh to get updated session
           router.refresh()
+          // Navigate to callback URL
+          router.push(callbackUrl)
         }, 500)
       } else {
         toast({
