@@ -55,10 +55,8 @@ export function DatePicker({
           selected={date}
           onSelect={onDateChange}
           initialFocus
-          locale={tr}
         />
       </PopoverContent>
     </Popover>
   )
 }
-
