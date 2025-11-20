@@ -1,6 +1,5 @@
 "use client"
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { useState, useEffect } from "react"
 import { CardSkeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
@@ -329,8 +328,7 @@ export default function ReportsPage() {
   )
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -391,7 +389,6 @@ export default function ReportsPage() {
           {activeTab === "facilities" && <FacilityReportsSection />}
         </div>
       </div>
-    </DashboardLayout>
   )
 }
 

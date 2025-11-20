@@ -1,6 +1,5 @@
 "use client"
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { useFinancialSummary, useHotelsFinancialSummary } from "@/lib/queries/financial-queries"
 import { useStatistics } from "@/lib/queries/statistics-queries"
 import { Loading } from "@/components/ui/loading"
@@ -308,22 +307,20 @@ function StatisticsCards() {
  */
 export default function OverviewPage() {
   return (
-    <DashboardLayout>
-      <div className="space-y-4 sm:space-y-6">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Genel Bakış</h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
-            Finansal özet ve genel istatistikler
-          </p>
-        </div>
-
-        <FinancialSummaryCards />
-
-        <FinancialSummaryTable />
-
-        <StatisticsCards />
+    <div className="space-y-4 sm:space-y-6">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold">Genel Bakış</h1>
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
+          Finansal özet ve genel istatistikler
+        </p>
       </div>
-    </DashboardLayout>
+
+      <FinancialSummaryCards />
+
+      <FinancialSummaryTable />
+
+      <StatisticsCards />
+    </div>
   )
 }
 

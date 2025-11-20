@@ -1,6 +1,5 @@
 "use client"
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -114,8 +113,7 @@ export default function ReservationCalendarPage() {
   const weekDaysList = eachDayOfInterval({ start: weekStart, end: weekEnd })
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Header */}
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Rezervasyon Takvimi</h1>
@@ -420,7 +418,6 @@ export default function ReservationCalendarPage() {
           onOpenChange={setIsModalOpen}
         />
       </div>
-    </DashboardLayout>
   )
 }
 

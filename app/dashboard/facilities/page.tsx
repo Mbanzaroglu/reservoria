@@ -1,6 +1,5 @@
 "use client"
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -88,8 +87,7 @@ export default function FacilitiesPage() {
   const totalPages = data?.totalPages || 1
 
   return (
-    <DashboardLayout>
-      <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6">
         {/* Title */}
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Tesisler</h1>
@@ -334,7 +332,6 @@ export default function FacilitiesPage() {
           )}
         </div>
       </div>
-    </DashboardLayout>
   )
 }
 
